@@ -9,7 +9,7 @@ This is a repository of automated tests for the linio and utest website.
 • Gherkin plugin (updated version).
 
 # INSTALLATION ⚙️
-•	To clone this repository locally, the following command must be run: "git clone https://github.com/brayanhernandez-99/automation-web.git"
+•	To clone this repository locally, the following command must be run: "git clone https://github.com/Montoya0314/booking.git"
 •	Import the project from Eclipse or IntelliJ IDE under the structure of an existing Gradle project. 
 •	Configure JRE System Library with JavaSE-1.8.
 

@@ -1,125 +1,87 @@
-#Autor miguel0314@gmail.com
+#Autor Miguel0314@gmail.com
 
-Feature: As user I want to perform manual tests of Booking website to check its functionality
+Feature: Automation tests of Booking.com.
+  I as a user need to perform automation tests of the Booking website for the reservation process.
 
-  Background: the user Enter the booking page and has an account.
+  Background: Enter the booking page.
+    Given the user is in the page booking
 
-    Given the user is in the page
-
-  @SingIn
-  Scenario: Sing in into website
-    When the user is in the sing in page
-    And enter its registered email
-    And enter ist password
-    Then the user will see its session started with a welcome message
-
-  @SignInWithSocialNetworks
-  Scenario Outline: Sign in with social networks <signInOption>.
-    When the user is in the sign in page
-    And choose a available sign in option <signInOption>
-    And enter credentials for logging
+  #Semi-automated scenario.
+  # Validate that you are not a robot by pressing and holding the button.
+  @SignInWebsite
+  Scenario Outline: Sign in a account in the website.
+    When the user is at login and enters their valid credentials
+      | email   | password   |
+      | <email> | <password> |
+    And validate that you are not a robot
     Then the user will be able to see the sign in successful
-    Examples: Sign in option available
-      | signInOption |
-      | Facebook     |
-      | Google       |
-      | Apple        |
+    Examples: Credentials available
+      | email                       | password     |
+      | testbooking2022@hotmail.com | Qwerty123456 |
 
-  @SignInWithInvalidEmail
-  Scenario: Sign in with an incorrect email.
-    When the user is in the sign in page
-    And enter an invalid email address
-    Then the user will see the message: Make sure the email address you entered is correct.
-
-  @SignInWithInvalidPassword
-  Scenario: Sign in with an incorrect password.
-    When the user is in the sign in page
-    And enter the correct email
-    And enter the wrong password
-    Then the user will be able to see this message: The email and password combination entered doesn't match.
-
+  #Semi-automated scenario.
+  #Change the email address for the new test in case it fails.
   @RegisterAccount
-  Scenario: Register account in the website.
-    When the user is in the register option
-    And enter a valid email
-    And enter a valid password
-    Then the user will be able to see the register successful
-
-  @RegisterAccountWithSocialNetworks
-  Scenario Outline: Create an account with different options <signInOption>.
-    When the user is in the register page
-    And choose an available register option <signInOption>
-    And enter correct information to logging
-    Then the user will be able to see the register successful
-    Examples: Register account option available
-      | signInOption |
-      | Facebook     |
-      | Google       |
-      | Apple        |
-
-  @ListYourPropertyButton
-  Scenario: Using the list your property option.
-    When the user click on list your property button
-    Then the user will see a new window opened redirecting to https://join.booking.com/
-
-  @Covid19RestrictionsPage
-  Scenario: Clicking the Covid 19 restrictions link.
-    When the user click on the link (Get the advice you need. Check the latest COVID-19 restrictions before you travel. Learn more)
-    Then the user will see a new window opened redirecting to https://www.booking.com/covid-19.html?aid=304142
-
-  @ResetPassword
-  Scenario: Reset password a account in the website.
-    When the user is in the sign in page
-    And enter a valid email address
-    And the user click in the button forgotten your password
-    And the user type its email to recover its password
-    And the system should send an email to reset the password
-    Then the user will receive an email to recover its password
-
-  @SelectADifferentLanguage
-  Scenario: Setting a different language.
-    When the user click in the button with a flag to choose a language
-    And a pop up window with will appear with available languages to choose
-    And the user select a language
-    Then the page will reload with the content in the selected language
+  Scenario Outline: Register account in the website.
+    When the user is in the registration option and enters his registration data
+      | email   | new_password   | confirm_password   |
+      | <email> | <new_password> | <confirm_password> |
+    And validate that you are not a robot
+    Then the user will be able to see the sign in successful
+    Examples: Data to create accounts
+      | email                      | new_password | confirm_password |
+      | testbooking123@hotmail.com | Qwerty123456 | Qwerty123456     |
 
   @ChangeCurrency
-  Scenario: Change currency.
-    When the user click in choose your currency
-    And choose a available currency
-    Then the user will be able to see prices in the selected currency
+  Scenario Outline: Change currency.
+    When the user click in choose your currency and choose the available currency <currency>
+    Then the user will be able to see the change the currency in this page for <currency>
+    Examples: Currency option available
+      | currency |
+      | EUR      |
+      | INR      |
+      | COP      |
 
-  @SubscribeToOffers
-  Scenario: Subscribe to offers.
-    When the user navigates to the end of the website
-    And type its email to newsletter subscription
-    And click on the button subscribe
-    And the user will see a message: Thanks! We've sent you an email so you can complete your subscription
-    Then the user will receive an email to confirm its subscription
+  @FindBookings
+  Scenario: Find stays bookings in the website no destination information.
+    When the user searches without target data information
+    Then should see an error message Error:
 
-  @ReadPrivacy&CookieStatement
-  Scenario: Read privacy and cookies statement.
-    When the user navigate to the bottom of the page
-    And clicks on the Privacy & Cookie Statement
-    Then the user will see the page Privacy & Cookie Statement to read it
+  @VerificationLinkBlockedAccount
+  Scenario Outline: Validate the verification link blocked account.
+    When the user logs in and enters their email address <email_blocked>
+    Then the user will have the option to Unlock with email
+    Examples: List of blocked accounts
+      | email_blocked    |
+      | qwerty@gmail.com |
 
-  @DestinationsFilters
-  Scenario: Using destinations we love filters.
-    When the user navigate to the bottom of the page
-    And clicks on the filters Regions, Cities or Places of interest
-    Then the user will see a list of results based on the filter selected
+  @VerificationLink
+  Scenario Outline: Validate the verification link option.
+    When the user is at login and enters their valid credentials
+      | email   | password   |
+      | <email> | <password> |
+    Then the user will be able to see the option Sign in with a verification link
+    Examples: Credentials available
+      | email                       | password     |
+      | testbooking2022@hotmail.com | Qwerty123456 |
+      | testbooking2022@gmail.com   | Qwerty123456 |
 
-  @FindATaxi
-  Scenario: Find a Taxi.
-    When the user selects the option Airport Taxis
-    And enter the data for pickup location
-    And enter the data for destination
-    And enter the data for date
-    And select an hour
-    And select a quantity of passengers
-    And click on search
-    Then the user will be able to see the list of available taxis for its requirement
+  @EmailAddressVerification
+  Scenario Outline: Email address validation.
+    When the user logs in and enters a invalid email address <email_invalid>
+    Then the user will be able to see a message error with Make sure the email address you entered is correct.
+    Examples: List email address invalid
+      | email_invalid           |
+      | error                   |
+      | testbooking2022         |
+      | testbooking2022@hotmail |
 
-
-
-
+  @PasswordsMatch
+  Scenario Outline: Validate the password match in the account registration option on the website.
+    When the user is in the registration option and enters his registration data
+      | email   | new_password   | confirm_password   |
+      | <email> | <new_password> | <confirm_password> |
+    Then Then the user will be able to see a message The passwords you entered didn't match – try again
+    Examples: Data to validate matching passwords
+      | email                      | new_password | confirm_password |
+      | testbooking123@hotmail.com | @Error12345  | @Error1234       |
